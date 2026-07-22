@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import axios from 'axios';
 import authRoutes from './routes/authRoutes';
 import aiRoutes from './routes/aiRoutes';
 import historyRoutes from './routes/historyRoutes';
@@ -52,6 +53,20 @@ const connectDB = async () => {
   }
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    
+    // Keep-alive self-pinging to prevent Render sleep (runs in production)
+    const BACKEND_URL = process.env.BACKEND_URL || 'https://contentecraft-project-6.onrender.com';
+    if (BACKEND_URL && !BACKEND_URL.includes('localhost') && !BACKEND_URL.includes('127.0.0.1')) {
+      console.log(`Keep-alive system started. Target: ${BACKEND_URL}`);
+      setInterval(async () => {
+        try {
+          await axios.get(BACKEND_URL);
+          console.log('Keep-alive ping sent successfully to:', BACKEND_URL);
+        } catch (error: any) {
+          console.error('Keep-alive ping failed:', error.message);
+        }
+      }, 14 * 60 * 1000); // 14 minutes interval (Render sleeps after 15 mins of inactivity)
+    }
   });
 };
 
