@@ -1,0 +1,11 @@
+.env
+.env.local
+.env.*.local
+node_modules/
+dist/
+.output/
+.vercel/
+*.log
+.DS_Store
+Thumbs.db
+C:\Users\HP\.gemini\antigravity-ide\brain\855d4be7-c7e0-4862-a854-bd27cc3b27d5/
