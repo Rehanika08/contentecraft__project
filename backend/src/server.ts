@@ -22,7 +22,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 const allowedOriginRegex = /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$/;
 app.use(express.json());
 app.use(cors({ origin: (origin, callback) => {
-  if (!origin || allowedOriginRegex.test(origin) || origin === FRONTEND_URL) return callback(null, true);
+  if (!origin || allowedOriginRegex.test(origin) || origin === FRONTEND_URL || origin.endsWith('.vercel.app')) return callback(null, true);
   return callback(new Error('CORS policy: Origin not allowed'));
 }, credentials: true }));
 app.use(helmet());

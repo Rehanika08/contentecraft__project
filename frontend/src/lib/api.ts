@@ -9,7 +9,8 @@ const getApiBase = () => {
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
     if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
-      return `http://${hostname}:5000/api`;
+      // Return the production Render backend URL when deployed
+      return 'https://contentecraft-project-6.onrender.com/api';
     }
   }
   return envUrl || 'http://localhost:5000/api';
