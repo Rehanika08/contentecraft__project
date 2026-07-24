@@ -1,19 +1,16 @@
 import axios from 'axios';
 
 const getApiBase = () => {
-  const envUrl = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL;
-  if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
-    return envUrl;
-  }
-  
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
+    // When deployed (not local), ALWAYS use the Render backend.
+    // This bypasses any misconfigured Vercel environment variables.
     if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1') {
-      // Return the production Render backend URL when deployed
       return 'https://contentecraft-project-6.onrender.com/api';
     }
   }
-  return envUrl || 'http://localhost:5000/api';
+  // Local development fallback
+  return import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 };
 
 const API_BASE = getApiBase();
